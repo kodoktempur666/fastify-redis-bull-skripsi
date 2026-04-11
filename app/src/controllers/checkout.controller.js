@@ -34,9 +34,9 @@ export const getCheckoutController = async (request, reply) => {
 
     const data = await getCheckout(id);
 
-    if (data) {
-      await connection.set(cacheKey, JSON.stringify(data), "EX", 60);
-    }
+    // if (data) {
+    //   await connection.set(cacheKey, JSON.stringify(data), "EX", 60);
+    // }
 
     return handleResponse(reply, 200, "From database", data);
   } catch (error) {
