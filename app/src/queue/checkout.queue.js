@@ -1,8 +1,6 @@
 import { Queue } from "bullmq";
 import redis from "../config/redis.js";
 
-const checkoutQueue = new Queue("checkoutQueue", {
-  connection: redis
-});
-
-export default checkoutQueue;
+export const createQueue = new Queue("createCheckoutQueue", { connection: redis });
+export const editQueue = new Queue("editCheckoutQueue", { connection: redis });
+export const patchQueue = new Queue("patchCheckoutQueue", { connection: redis });
