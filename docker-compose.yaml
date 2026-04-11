@@ -13,3 +13,9 @@ services:
       DB_PASSWORD: psql
       DB_NAME: mydb
 
+  worker-post-fastify:
+    build: ./app
+    container_name: worker_post_fastify
+    image: worker-post-fastify:latest
+    network_mode: "host"
+    command: node src/worker/checkoutPost.worker.js
