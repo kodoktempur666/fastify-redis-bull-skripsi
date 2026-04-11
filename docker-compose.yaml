@@ -13,10 +13,10 @@ services:
       DB_PASSWORD: psql
       DB_NAME: mydb
 
-  worker-post-fastify:
+  worker-post-nogrpc:
     build: ./app
-    container_name: worker_post_fastify
-    image: worker-post-fastify:latest
+    container_name: worker_post_nogrpc
+    image: worker-post-nogrpc:latest
     network_mode: "host"
     command: node src/worker/checkoutPost.worker.js
     environment:
@@ -25,4 +25,31 @@ services:
       DB_USER: postgres
       DB_PASSWORD: psql
       DB_NAME: mydb
+  
+  worker-put-nogrpc:
+    build: ./app
+    container_name: worker_put_nogrpc
+    image: worker-patch-nogrpc:latest
+    network_mode: "host"
+    command: node src/worker/checkoutPut.worker.js
+    environment:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: psql
+      DB_NAME: mydb
+  
+  worker-patch-nogrpc:
+    build: ./app
+    container_name: worker_patch_nogrpc
+    image: worker-patch-nogrpc:latest
+    network_mode: "host"
+    command: node src/worker/checkoutPatch.worker.js
+    environment:
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: psql
+      DB_NAME: mydb
+
 
