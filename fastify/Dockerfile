@@ -1,6 +1,6 @@
 FROM node:24
 
-WORKDIR /fastify
+WORKDIR /
 
 COPY package.json ./
 RUN npm install
