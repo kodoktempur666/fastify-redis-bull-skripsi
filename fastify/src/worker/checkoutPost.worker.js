@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import redisWorker from "../config/redis.worker.js";
+import redis from "../config/redis.js";
 import pool from "../config/db.js"; 
 
 const createCheckoutWorker = new Worker(
@@ -22,8 +22,8 @@ const createCheckoutWorker = new Worker(
     }
   },
   {
-    connection: redisWorker,
-    concurrency: 20,
+    connection: redis,
+    concurrency: 30,
   }
 );
 
