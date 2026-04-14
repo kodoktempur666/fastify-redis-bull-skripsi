@@ -3,10 +3,10 @@ services:
     build: ./express
     container_name: express_opti_app
     ports:
-      - "3020:3020"
+      - "3010:3010"
     network_mode: "host"
     environment:
-      PORT: 3020
+      PORT: 3010
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: postgres
@@ -31,10 +31,10 @@ services:
     build: ./fastify
     container_name: fastify-opti-app
     ports:
-      - "3025:3025"
+      - "3015:3015"
     network_mode: "host"
     environment:
-      PORT: 3025
+      PORT: 3015
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_USER: postgres
