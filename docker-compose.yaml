@@ -18,6 +18,7 @@ services:
     build: ./express
     container_name: express-opti-app
     image: express-opti-app:latest
+    depends_on: fastify-opti-app
     ports:
       - "3010:3010"
     network_mode: "host"
@@ -33,27 +34,31 @@ services:
     build: ./express
     container_name: cart-worker
     image: cart-worker:latest
-    network_mode: "host"
+    depends_on: express-opti-app
+
     command: node src/workers/cart.worker.js
   
   checkout-worker:
     build: ./express
     container_name: checkout-worker
-    image: cart-worker:latest
-    network_mode: "host"
+    image: checkout-worker:latest
+    depends_on: express-opti-app
+
     command: node src/workers/checkout.worker.js
 
   email-worker:
     build: ./express
     container_name: email-worker
     image: email-worker:latest
-    network_mode: "host"
+    depends_on: express-opti-app
+
     command: node src/workers/email.worker.js
 
   stock-worker:
     build: ./express
     container_name: stock-worker
     image: stock-worker:latest
-    network_mode: "host"
+    depends_on: express-opti-app
+
     command: node src/workers/stock.worker.js
 
