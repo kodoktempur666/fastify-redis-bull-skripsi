@@ -1,32 +1,4 @@
 services:
-  express-opti-app:
-    build: ./express
-    container_name: express_opti_app
-    ports:
-      - "3010:3010"
-    network_mode: "host"
-    environment:
-      PORT: 3010
-      DB_HOST: 127.0.0.1
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: psql
-      DB_NAME: mydb
-
-  # worker-post-grpc:
-  #   build: ./express
-  #   container_name: worker-post-grpc
-  #   image: worker-post-grpc:latest
-  #   network_mode: "host"
-  #   command: node src/worker/checkoutPost.worker.js
-  #   environment:
-  #     DB_HOST: 127.0.0.1
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASSWORD: psql
-  #     DB_NAME: mydb
-  
-
   fastify-opti-app:
     build: ./fastify
     container_name: fastify-opti-app
@@ -41,32 +13,45 @@ services:
       DB_PASSWORD: psql
       DB_NAME: mydb
 
-  # worker-post:
-  #   build: ./fastify
-  #   container_name: worker-post
-  #   image: worker-post:latest
-  #   network_mode: "host"
-  #   command: node src/worker/checkoutPost.worker.js
-  #   environment:
-  #     DB_HOST: 127.0.0.1
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASSWORD: psql
-  #     DB_NAME: mydb
+  express-opti-app:
+    build: ./express
+    container_name: express-opti-app
+    ports:
+      - "3010:3010"
+    network_mode: "host"
+    environment:
+      PORT: 3010
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: psql
+      DB_NAME: mydb
   
-  # grpc-server:
-  #   build: ./grpc-server
-  #   image: grpc-server:latest
-  #   container_name: grpc_server
-  #   ports:
-  #     - "50051:50051"
-  #   network_mode: "host"
-  #   environment:
-  #     DB_HOST: 127.0.0.1
-  #     DB_PORT: 5432
-  #     DB_USER: postgres
-  #     DB_PASSWORD: psql
-  #     DB_NAME: mydb
+  cart-worker:
+    build: ./express
+    container_name: cart-worker
+    image: cart-worker:latest
+    network_mode: "host"
+    command: node src/workers/cart.worker.js
+  
+  checkout-worker:
+    build: ./express
+    container_name: checkout-worker
+    image: cart-worker:latest
+    network_mode: "host"
+    command: node src/workers/checkout.worker.js
 
+  email-worker:
+    build: ./express
+    container_name: email-worker
+    image: email-worker:latest
+    network_mode: "host"
+    command: node src/workers/email.worker.js
 
+  stock-worker:
+    build: ./express
+    container_name: stock-worker
+    image: stock-worker:latest
+    network_mode: "host"
+    command: node src/workers/stock.worker.js
 

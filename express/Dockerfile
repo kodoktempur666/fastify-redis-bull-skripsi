@@ -1,14 +1,12 @@
 FROM node:24
 
-WORKDIR ./
+WORKDIR /app
 
-COPY package.json package-lock.json* ./
+COPY package.json ./
 RUN npm install
 
 COPY . .
 
 EXPOSE 3010
 
-# CMD ["node", "src/index.js"]
-
-CMD ["sh", "-c", "node src/server.js & node src/worker/checkoutPost.worker.js"]
+CMD ["node", "src/index.js"]

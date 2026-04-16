@@ -13,13 +13,13 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@grpc/grpc-js": "^1.14.3",
-    "@grpc/proto-loader": "^0.8.0",
-    "bullmq": "^5.73.1",
+    "bcrypt": "^6.0.0",
+    "bullmq": "^5.74.1",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "ioredis": "^5.10.1",
+    "jsonwebtoken": "^9.0.3",
     "pg": "^8.18.0",
     "prom-client": "^15.1.3"
   }
