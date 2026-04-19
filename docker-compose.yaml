@@ -31,20 +31,20 @@ services:
       DB_PASSWORD: psql
       DB_NAME: mydb
   
-  cart-worker:
-    build: ./express
-    container_name: cart-worker
-    image: cart-worker:latest
-    depends_on: 
-      - express-opti-app
-    network_mode: "host"
-    command: node src/workers/cart.worker.js
-    environment:
-      DB_HOST: 127.0.0.1
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: psql
-      DB_NAME: mydb
+  # cart-worker:
+  #   build: ./express
+  #   container_name: cart-worker
+  #   image: cart-worker:latest
+  #   depends_on: 
+  #     - express-opti-app
+  #   network_mode: "host"
+  #   command: node src/workers/cart.worker.js
+  #   environment:
+  #     DB_HOST: 127.0.0.1
+  #     DB_PORT: 5432
+  #     DB_USER: postgres
+  #     DB_PASSWORD: psql
+  #     DB_NAME: mydb
   
   checkout-worker:
     build: ./express
@@ -71,18 +71,18 @@ services:
     network_mode: "host"
     command: node src/workers/email.worker.js
 
-  stock-worker:
-    build: ./express
-    container_name: stock-worker
-    image: stock-worker:latest
-    depends_on: 
-      - express-opti-app
-    network_mode: "host"
-    command: node src/workers/stock.worker.js
-    environment:
-      DB_HOST: 127.0.0.1
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: psql
-      DB_NAME: mydb
+  # stock-worker:
+  #   build: ./express
+  #   container_name: stock-worker
+  #   image: stock-worker:latest
+  #   depends_on: 
+  #     - express-opti-app
+  #   network_mode: "host"
+  #   command: node src/workers/stock.worker.js
+  #   environment:
+  #     DB_HOST: 127.0.0.1
+  #     DB_PORT: 5432
+  #     DB_USER: postgres
+  #     DB_PASSWORD: psql
+  #     DB_NAME: mydb
   
