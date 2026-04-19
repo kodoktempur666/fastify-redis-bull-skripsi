@@ -70,3 +70,31 @@ export const reduceStock = async (productId, quantity) => {
     [quantity, productId]
   );
 };
+
+export const reduceStockBatch = async (items) => {
+  if (items.length === 0) return;
+
+  const cases = [];
+  const ids = [];
+  const params = [];
+
+  items.forEach((item, index) => {
+    const paramQty = index * 2 + 1;
+    const paramId = index * 2 + 2;
+
+    cases.push(`WHEN id = $${paramId} THEN stock - $${paramQty}`);
+    
+    params.push(item.quantity, item.product_id);
+    ids.push(`$${paramId}`);
+  });
+
+  const query = `
+    UPDATE products
+    SET stock = CASE
+      ${cases.join("\n")}
+    END
+    WHERE id IN (${ids.join(",")})
+  `;
+
+  await pool.query(query, params);
+};
