@@ -5,11 +5,11 @@ import { handleResponse } from "../utils/response.js";
 
 export const checkout = async (req, res, next) => {
   const { cartId } = req.params;
-  const userId = req.userId;
+
 
   await checkoutQueue.add(
     "checkout",
-    { cartId, userId },
+    { cartId },
     { jobId: `checkout-${cartId}` } // idempotency
   );
 

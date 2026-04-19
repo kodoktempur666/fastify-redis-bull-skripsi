@@ -1,11 +1,10 @@
-import { createOrder, updateOrderToPaid } from "../models/order.model.js";
+import { createOrder } from "../models/order.model.js";
 
-import { getCartById, updateCartStatus } from "../models/cart.model.js";
+import { getCartById } from "../models/cart.model.js";
 
 import { getCartItemsByCartId } from "../models/cartItem.model.js";
 import { insertOrderItem } from "../models/orderItem.model.js";
 
-import { createPaymentMock } from '../models/paymentMock.model.js';
 import { Queue } from "bullmq";
 import redis from "../config/redis.js";
 
@@ -19,28 +18,7 @@ const stockQueue = new Queue("stockQueue", {
   },
 });
 
-const mockPayment = async (orderId, totalAmount) => {
-  const delay = Math.floor(Math.random() * 40) + 10;
-
-  await new Promise((resolve) => setTimeout(resolve, delay));
-
-  const success = true; 
-  const mockResponse = {
-    status: success ? "success" : "failure",
-    transaction_id: `mock_txn_${Date.now()}_${orderId}`,
-    amount: totalAmount,
-  };
-
-  await createPaymentMock(orderId, mockResponse, delay);
-
-  return success;
-};
-
-
-
-export const processCheckout = async ({ cartId, userId }) => {
-
-
+export const processCheckout = async ({ cartId }) => {
   const cart = await getCartById(cartId);
 
   if (!cart) {
@@ -65,33 +43,18 @@ export const processCheckout = async ({ cartId, userId }) => {
     total += item.price_at_add * item.quantity;
   }
 
-  const order = await createOrder(userId, cartId, total);
+  const order = await createOrder(cartId, total);
 
+  await insertOrderItem(order.id, items);
 
-  const paymentSuccess = await mockPayment(order.id, total);
+  const safeItems = items.map((item) => ({
+    product_id: Number(item.product_id),
+    quantity: Number(item.quantity),
+  }));
 
-  if (!paymentSuccess) {
-    console.log("Payment failed:", order.id);
-    return;
-  }
-
-  await updateOrderToPaid(order.id);
-  await updateCartStatus(cartId, "checked_out");
-
-  for (const item of items) {
-    await insertOrderItem(
-      order.id,
-      item.product_id,
-      item.quantity,
-      item.price_at_add,
-    );
-
-    await stockQueue.add("reduceStock", {
-      productId: item.product_id,
-      quantity: item.quantity,
-    });
-  }
+  await stockQueue.add("reduceStock", {
+    safeItems,
+  });
 
   console.log("Checkout success:", order.id);
 };
-

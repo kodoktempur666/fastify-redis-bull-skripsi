@@ -5,7 +5,7 @@ import { authMiddleware, requireAuth } from "../middleware/auth.middleware.js";
 
 const route = express.Router();
 
-route.post("/carts/:cartId/checkout", authMiddleware, checkout);
-route.get("/orders/:orderId",requireAuth, getOrder);
+route.post("/carts/:cartId/checkout", checkout);
+route.get("/orders/:orderId", getOrder);
 
 export default route;

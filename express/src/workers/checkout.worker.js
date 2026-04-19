@@ -12,6 +12,6 @@ new Worker(
   },
   {
     connection: redis,
-    concurrency: 10,
+    concurrency: 20,
   }
 );
