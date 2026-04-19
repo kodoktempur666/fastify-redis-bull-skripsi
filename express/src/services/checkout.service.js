@@ -5,18 +5,18 @@ import { getCartById } from "../models/cart.model.js";
 import { getCartItemsByCartId } from "../models/cartItem.model.js";
 import { insertOrderItem } from "../models/orderItem.model.js";
 
-import { Queue } from "bullmq";
-import redis from "../config/redis.js";
+// import { Queue } from "bullmq";
+// import redis from "../config/redis.js";
 
-const stockQueue = new Queue("stockQueue", {
-  connection: redis,
-  defaultJobOptions: {
-    attempts: 3,
-    backoff: { type: "exponential", delay: 1000 },
-    removeOnComplete: true,
-    removeOnFail: false,
-  },
-});
+// const stockQueue = new Queue("stockQueue", {
+//   connection: redis,
+//   defaultJobOptions: {
+//     attempts: 3,
+//     backoff: { type: "exponential", delay: 1000 },
+//     removeOnComplete: true,
+//     removeOnFail: false,
+//   },
+// });
 
 export const processCheckout = async ({ cartId }) => {
   const cart = await getCartById(cartId);
@@ -47,14 +47,14 @@ export const processCheckout = async ({ cartId }) => {
 
   await insertOrderItem(order.id, items);
 
-  const safeItems = items.map((item) => ({
-    product_id: Number(item.product_id),
-    quantity: Number(item.quantity),
-  }));
+  // const safeItems = items.map((item) => ({
+  //   product_id: Number(item.product_id),
+  //   quantity: Number(item.quantity),
+  // }));
 
-  await stockQueue.add("reduceStock", {
-    safeItems,
-  });
+  // await stockQueue.add("reduceStock", {
+  //   safeItems,
+  // });
 
   console.log("Checkout success:", order.id);
 };
